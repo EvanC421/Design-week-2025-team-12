@@ -5,8 +5,8 @@ int playerX = 0;
 int playerY = 0;
 
 
-
-while (playerX < 3 && playerY < 3)
+    //The method that allows the player to move
+    void Movement()
 {
 
     //Set every space on the map to empty
