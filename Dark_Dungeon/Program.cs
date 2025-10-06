@@ -1,57 +1,75 @@
-﻿// See https://aka.ms/new-console-template for more information
-string message = "";
-string[,] map = new string[3,3];
-int playerX = 0;
-int playerY = 0;
+﻿Main();
+void Main()
+{
+    string message = "";
+    string[,] map = new string[4, 4];
+    int playerX = 1;
+    int playerY = 1;
 
+    Movement();
+
+    void DrawMap()
+    {
+        //Fill the players location with an X
+        map[playerY, playerX] = "[x]";
+
+        //Display every coordinate of the map
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                Console.Write(map[i, j]);
+            }
+            Console.WriteLine();
+        }
+    }
 
     //The method that allows the player to move
     void Movement()
-{
-
-    //Set every space on the map to empty
-    for (int i = 0; i < 3; i++)
     {
-        for (int j = 0; j < 3; j++)
+        String input = Console.ReadLine();
+        if (input.Contains("South"))
         {
-            map[i, j] = "[ ]";
+            if (playerY == 3)
+            {
+                Console.Clear();
+                DrawMap();
+                Console.Beep();
+                Console.WriteLine("Dead end!");
+                Movement();
+            }
+            playerY += 1;
         }
-    }
 
-
-    String input = Console.ReadLine();
-    if (input.Contains("South"))
-    {
-        playerY += 1;
-    }
-
-    //Fill the players location with an X
-    map[playerY, playerX] = "[x]";
-
-    //Display every coordinate of the map
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 3; j++)
+        //Set every space on the map to empty
+        for (int i = 0; i < 4; i++)
         {
-            Console.Write(map[i, j]);
+            for (int j = 0; j < 4; j++)
+            {
+                map[i, j] = "[ ]";
+            }
         }
-        Console.WriteLine();
+
+
+        Console.Clear();
+        Reaction();
     }
 
-    //Set message for all rooms
-    message = $"You are in {playerX}, {playerY}.";
-
-    //Check specific room
-    if (playerX == 2 && playerY == 3)
+    //This method prints a response depending on the player's actions
+    void Reaction()
     {
-        message = "You are in room 2,3";
+        DrawMap();
+
+        //Set message for all rooms
+        message = $"You are in {playerX}, {playerY}.";
+        //Check specific room
+        if (playerX == 2 && playerY == 1)
+        {
+            message = "You are in room 2,1";
+        }
+        Console.WriteLine("\n" + message);
+        Movement();
     }
-
-
-    Console.WriteLine("\n" + message);
-    Console.ReadKey();
-    Console.Clear();
 }
-
 
 
