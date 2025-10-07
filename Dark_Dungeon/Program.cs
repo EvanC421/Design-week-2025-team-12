@@ -5,7 +5,7 @@ void Main()
     string[,] map = new string[4, 4];
     int playerX = 1;
     int playerY = 1;
-    //The player's previous coordinates
+    //Player's previous coordinates
     int playerPX = 1;
     int playerPY = 1;
     Movement();
@@ -30,7 +30,7 @@ void Main()
         }
     }
 
-    //The method that allows the player to move
+    //Allows the player to move
     void Movement()
     {
         String input = Console.ReadLine();
@@ -103,7 +103,7 @@ void Main()
         Reaction();
     }
 
-    //This method prints a response depending on the player's actions
+    //Prints a response depending on the player's actions
     void Reaction()
     {
         Walls();
