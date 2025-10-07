@@ -28,7 +28,7 @@ void Main()
     void Movement()
     {
         String input = Console.ReadLine();
-        if (input.Contains("South"))
+        if (input.Contains("south"))
         {
             if (playerY == 3)
             {
@@ -41,14 +41,53 @@ void Main()
             playerY += 1;
         }
 
-        //Set every space on the map to empty
-        for (int i = 0; i < 4; i++)
+        else if (input.Contains("north"))
         {
-            for (int j = 0; j < 4; j++)
+            if (playerY == 0)
             {
-                map[i, j] = "[ ]";
+                Console.Clear();
+                DrawMap();
+                Console.Beep();
+                Console.WriteLine("Dead end!");
+                Movement();
             }
+            playerY -= 1;
         }
+
+        else if (input.Contains("east"))
+        {
+            if (playerX == 3)
+            {
+                Console.Clear();
+                DrawMap();
+                Console.Beep();
+                Console.WriteLine("Dead end!");
+                Movement();
+            }
+            playerX += 1;
+        }
+
+        else if (input.Contains("west"))
+        {
+            if (playerX == 0)
+            {
+                Console.Clear();
+                DrawMap();
+                Console.Beep();
+                Console.WriteLine("Dead end!");
+                Movement();
+            }
+            playerX -= 1;
+        }
+
+            //Set every space on the map to empty
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    map[i, j] = "[ ]";
+                }
+            }
 
 
         Console.Clear();
