@@ -16,6 +16,8 @@ void Main()
     {
         //Fill the players location with an X
         map[playerY, playerX] = "[x]";
+        map[2, 2] = "[O]";
+        map[3, 2] = "[O]";
 
         //Display every coordinate of the map
         for (int i = 0; i < 4; i++)
@@ -126,7 +128,9 @@ void Main()
             playerY = playerPY;
             playerX = playerPX;
             Console.Beep();
+            DrawMap();
             Console.WriteLine("Dead End!");
+            Movement();
         }
         else
         {
