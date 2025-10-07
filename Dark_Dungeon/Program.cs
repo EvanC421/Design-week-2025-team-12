@@ -5,8 +5,12 @@ void Main()
     string[,] map = new string[4, 4];
     int playerX = 1;
     int playerY = 1;
-
+    //The player's previous coordinates
+    int playerPX = 1;
+    int playerPY = 1;
     Movement();
+
+
 
     void DrawMap()
     {
@@ -38,6 +42,7 @@ void Main()
                 Console.WriteLine("Dead end!");
                 Movement();
             }
+            playerPY = playerY;
             playerY += 1;
         }
 
@@ -51,6 +56,7 @@ void Main()
                 Console.WriteLine("Dead end!");
                 Movement();
             }
+            playerPY = playerY;
             playerY -= 1;
         }
 
@@ -64,6 +70,7 @@ void Main()
                 Console.WriteLine("Dead end!");
                 Movement();
             }
+            playerPX = playerX;
             playerX += 1;
         }
 
@@ -77,6 +84,7 @@ void Main()
                 Console.WriteLine("Dead end!");
                 Movement();
             }
+            playerPX = playerX;
             playerX -= 1;
         }
 
@@ -89,7 +97,6 @@ void Main()
                 }
             }
 
-
         Console.Clear();
         Reaction();
     }
@@ -97,6 +104,7 @@ void Main()
     //This method prints a response depending on the player's actions
     void Reaction()
     {
+        Walls();
         DrawMap();
 
         //Set message for all rooms
@@ -104,10 +112,27 @@ void Main()
         //Check specific room
         if (playerX == 2 && playerY == 1)
         {
-            message = "You are in room 2,1";
+            message = "There is a bunch of glowing blue mushrooms on the floor";
         }
         Console.WriteLine("\n" + message);
         Movement();
+    }
+
+    void Walls()
+    {
+        //wall 1
+        if (playerX == 2 && playerY >= 2)
+        {
+            playerY = playerPY;
+            playerX = playerPX;
+            Console.Beep();
+            Console.WriteLine("Dead End!");
+        }
+        else
+        {
+            playerPY = playerY;
+            playerPX = playerX;
+        }
     }
 }
 
