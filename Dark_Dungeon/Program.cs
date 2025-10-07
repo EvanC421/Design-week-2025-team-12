@@ -3,11 +3,15 @@ void Main()
 {
     string message = "";
     string[,] map = new string[4, 4];
+    int torch = 3;
     int playerX = 1;
     int playerY = 1;
     //Player's previous coordinates
     int playerPX = 1;
     int playerPY = 1;
+    //Enemy's coordinates
+    int enemyX = 3;
+    int enemyY = 3;
     Movement();
 
 
@@ -16,6 +20,7 @@ void Main()
     {
         //Fill the players location with an X
         map[playerY, playerX] = "[x]";
+        map[enemyY, enemyX] = "[!]";
         map[2, 2] = "[O]";
         map[3, 2] = "[O]";
 
@@ -46,6 +51,8 @@ void Main()
             }
             playerPY = playerY;
             playerY += 1;
+            //Set message for all rooms
+            message = $"You are in {playerX}, {playerY}.";
         }
 
         else if (input.Contains("north"))
@@ -60,6 +67,8 @@ void Main()
             }
             playerPY = playerY;
             playerY -= 1;
+            //Set message for all rooms
+            message = $"You are in {playerX}, {playerY}.";
         }
 
         else if (input.Contains("east"))
@@ -74,6 +83,8 @@ void Main()
             }
             playerPX = playerX;
             playerX += 1;
+            //Set message for all rooms
+            message = $"You are in {playerX}, {playerY}.";
         }
 
         else if (input.Contains("west"))
@@ -88,6 +99,22 @@ void Main()
             }
             playerPX = playerX;
             playerX -= 1;
+            //Set message for all rooms
+            message = $"You are in {playerX}, {playerY}.";
+        }
+
+        //Makes torches functional
+        else if(input.Contains("torch"))
+        {
+            if (torch > 0)
+            {
+                message = "you used a torch!";
+                torch -= 1;
+            }
+            else
+            {
+                message = "torch not found!";
+            }
         }
 
             //Set every space on the map to empty
@@ -100,6 +127,7 @@ void Main()
             }
 
         Console.Clear();
+        //Enemy();
         Reaction();
     }
 
@@ -107,17 +135,71 @@ void Main()
     void Reaction()
     {
         Walls();
+        Enemy();
         DrawMap();
 
-        //Set message for all rooms
-        message = $"You are in {playerX}, {playerY}.";
         //Check specific room
         if (playerX == 2 && playerY == 1)
         {
             message = "There is a bunch of glowing blue mushrooms on the floor";
         }
         Console.WriteLine("\n" + message);
+        Console.WriteLine("Monster is in " + (enemyY) + (enemyX));
+        Console.WriteLine("torches: x" + torch);
         Movement();
+    }
+
+    void Enemy()
+    {
+        Random rand = new Random();
+        int directionE = rand.Next(0, 3);
+        if (directionE == 0)
+        {
+            if (enemyY != 0)
+            {
+                enemyY -= 1;
+            }
+            else
+            {
+                Enemy();
+            }
+        }
+
+        else if (directionE == 1)
+        {
+            if (enemyY != 3)
+            {
+                enemyY += 1;
+            }
+            else
+            {
+                Enemy();
+            }
+        }
+
+        else if (directionE == 2)
+        {
+            if (enemyX != 0)
+            {
+                enemyX -= 1;
+            }
+            else
+            {
+                Enemy();
+            }
+        }
+
+        else if (directionE == 3)
+        {
+            if (enemyX != 3)
+            {
+                enemyX += 1;
+            }
+            else
+            {
+                Enemy();
+            }
+        }
     }
 
     void Walls()
@@ -138,6 +220,8 @@ void Main()
             playerPX = playerX;
         }
     }
+
+
 }
 
 
