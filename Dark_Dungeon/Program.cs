@@ -4,6 +4,7 @@ void Main()
     string message = "";
     string[,] map = new string[4, 4];
     int torch = 3;
+    int health = 5;
     int playerX = 1;
     int playerY = 1;
     //Player's previous coordinates
@@ -13,8 +14,6 @@ void Main()
     int enemyX = 3;
     int enemyY = 3;
     Movement();
-
-
 
     void DrawMap()
     {
@@ -138,6 +137,20 @@ void Main()
         Enemy();
         DrawMap();
 
+        if (playerX == enemyX && playerY == enemyY)
+        {
+            health -= 1;
+            Console.WriteLine("You were attacked by a monster! It ran away after.");
+            Console.Beep(100, 1000);
+            enemyX = 1;
+            enemyY = 1;
+            if (health <= 0)
+            {
+                Console.Clear();
+                Console.WriteLine("GAME OVER\n\nPress ENTER to try again");
+                Main();
+            }
+        }
         //Check specific room
         if (playerX == 2 && playerY == 1)
         {
@@ -145,14 +158,15 @@ void Main()
         }
         Console.WriteLine("\n" + message);
         Console.WriteLine("Monster is in " + (enemyY) + (enemyX));
-        Console.WriteLine("torches: x" + torch);
+        Console.WriteLine("torches: x" + torch+"\nhealth: x"+health);
         Movement();
     }
 
+    //Allows the enemy to move around randomly
     void Enemy()
     {
         Random rand = new Random();
-        int directionE = rand.Next(0, 3);
+        int directionE = rand.Next(0, 4);
         if (directionE == 0)
         {
             if (enemyY != 0)
@@ -202,6 +216,7 @@ void Main()
         }
     }
 
+    //Builds walls in the level
     void Walls()
     {
         //wall 1
