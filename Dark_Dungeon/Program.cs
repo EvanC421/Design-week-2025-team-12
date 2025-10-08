@@ -7,14 +7,16 @@ void Main()
    
 
     string message = "";
+    string direction = "";
     string[,] map = new string[10, 10];
     int torch = 3;
-    int health = 5;
+    int health = 3;
     int playerX = 5;
     int playerY = 4;
     int boundMin = 0;
     int boundMaxY = 9;
     int boundMaxX = 9;
+    bool treasure = false;
     //Player's previous coordinates
     int playerPX = 1;
     int playerPY = 1;
@@ -50,21 +52,22 @@ void Main()
     //Allows the player to move
     void Movement()
     {
+        message = "";
         String input = Console.ReadLine();
         if (input.Contains("south"))
         {
             if (playerY == boundMaxY)
             {
                 Console.Clear();
-                DrawMap();
                 Console.Beep();
-                Console.WriteLine("Dead end!");
-                Movement();
+                message = "Dead end!";
+                Reaction();
             }
             playerPY = playerY;
             playerY += 1;
+            direction = "You went south";
             //Set message for all rooms
-            message = $"You are in {playerX}, {playerY}.";
+            //message = $"You are in {playerX}, {playerY}.";
         }
 
         else if (input.Contains("north"))
@@ -72,15 +75,15 @@ void Main()
             if (playerY == boundMin)
             {
                 Console.Clear();
-                DrawMap();
                 Console.Beep();
-                Console.WriteLine("Dead end!");
-                Movement();
+                message = "Dead end!";
+                Reaction();
             }
             playerPY = playerY;
             playerY -= 1;
+            direction = "You went north";
             //Set message for all rooms
-            message = $"You are in {playerX}, {playerY}.";
+            //message = $"You are in {playerX}, {playerY}.";
         }
 
         else if (input.Contains("east"))
@@ -88,15 +91,15 @@ void Main()
             if (playerX == boundMaxX)
             {
                 Console.Clear();
-                DrawMap();
                 Console.Beep();
-                Console.WriteLine("Dead end!");
-                Movement();
+                message = "Dead End!";
+                Reaction();
             }
             playerPX = playerX;
             playerX += 1;
+            direction = "You went east";
             //Set message for all rooms
-            message = $"You are in {playerX}, {playerY}.";
+            //message = $"You are in {playerX}, {playerY}.";
         }
 
         else if (input.Contains("west"))
@@ -104,15 +107,15 @@ void Main()
             if (playerX == boundMin)
             {
                 Console.Clear();
-                DrawMap();
                 Console.Beep();
-                Console.WriteLine("Dead end!");
-                Movement();
+                message = "Dead end!";
+                Reaction();
             }
             playerPX = playerX;
             playerX -= 1;
+            direction = "You went west";
             //Set message for all rooms
-            message = $"You are in {playerX}, {playerY}.";
+            //message = $"You are in {playerX}, {playerY}.";
         }
 
         //Makes torches functional
@@ -120,7 +123,7 @@ void Main()
         {
             if (torch > 0)
             {
-                message = "you used a torch!";
+                direction = "you used a torch!\nThe room around you lights up, and you know exactly where you are! room "+(playerY)+","+(playerX)+"!";
                 torch -= 1;
             }
             else
@@ -147,7 +150,7 @@ void Main()
     {
         Enemy();
         Walls();
-        DrawMap();
+        //DrawMap();
        
 
         if (playerX == enemyX && playerY == enemyY)
@@ -164,13 +167,31 @@ void Main()
                 Main();
             }
         }
+        //check if minotaur is near
+        if (playerY+1 >= enemyY && playerY-1 <= enemyY && playerX+1 >= enemyX && playerX-1 <= enemyX)
+        {
+            Console.Beep(200,700); 
+        }
+
         //Check specific room
         if (playerX == 2 && playerY == 1)
         {
             message = "There is a bunch of glowing blue mushrooms on the floor";
         }
-        Console.WriteLine("\n" + message);
-        Console.WriteLine("Monster is in " + (enemyY) + (enemyX));
+
+        if (playerX == 1 && playerY == 4)
+        {
+            treasure = true;
+            message = "You found the treasure! Now retrace your steps and escape up the stairs.";
+        }
+
+        if (playerX == 4 && playerY == 4 && treasure)
+        {
+            Console.WriteLine("Congradulations! You've escaped the DARK DUNGEON with the treasure in hand. Press ENTER to restart!");
+            Main();
+        }
+        Console.WriteLine(direction);
+        Console.WriteLine(message);
         Console.WriteLine("torches: x" + torch + "\nhealth: x" + health);
         Movement();
     }
@@ -245,11 +266,10 @@ void Main()
             {
                 playerY = playerPY;
                 playerX = playerPX;
+                Console.Clear();
                 Console.Beep();
-                //DrawMap();
-
-                Console.WriteLine("Dead End!");
-                Movement();
+                message = "Dead End!";
+                Reaction();
             }
 
             if (enemyX == walls[i].xLocation && enemyY == walls[i].yLocation)
