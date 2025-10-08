@@ -174,9 +174,19 @@ void Main()
         }
 
         //Check specific room
-        if (playerX == 2 && playerY == 1)
+        if (playerX == 7 && playerY == 3 || playerX == 9 && playerY == 1)
         {
-            message = "There is a bunch of glowing blue mushrooms on the floor";
+            message = "There is a bunch of glowing blue mushrooms on the floor.";
+        }
+
+        if (playerX == 8 && playerY == 8 || playerX == 5 && playerY == 0)
+        {
+            message = "There is a candlestick with a dim red glow in the middle of the room.";
+        }
+
+        if (playerX == 3 && playerY == 1 || playerX == 1  && playerY == 8)
+        {
+            message = "There is a skeleton lying on the floor.";
         }
 
         if (playerX == 1 && playerY == 4)
