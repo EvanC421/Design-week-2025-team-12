@@ -1,18 +1,29 @@
-﻿Main();
+﻿using Dark_Dungeon;
+
+Main();
 void Main()
 {
+    Wall[] walls = new Wall[] { new Wall(1, 1), new Wall(2, 1), new Wall(2,2), new Wall(2,3), new Wall(2,4), new Wall (0,3), new Wall(0,7), new Wall(0,9), new Wall(1,5), new Wall(2,5), new Wall(2,7), new Wall (2,8), new Wall (3,4), new Wall (3,3), new Wall (3,5), new Wall (3,7), new Wall (4,0), new Wall (4,2), new Wall (4,3), new Wall (4,5), new Wall (4,6), new Wall (4,9), new Wall(5,8), new Wall (5,9), new Wall (6,0), new Wall (6,1), new Wall (6,3), new Wall (6,5), new Wall (6,6), new Wall (6,9), new Wall (7,6), new Wall (7,7), new Wall (8,1), new Wall (8,2), new Wall (8,4), new Wall (8,7), new Wall (8,9), new Wall (9,2), new Wall (9,4), new Wall (9,5)};
+   
+
     string message = "";
-    string[,] map = new string[4, 4];
+    string[,] map = new string[10, 10];
     int torch = 3;
     int health = 5;
-    int playerX = 1;
-    int playerY = 1;
+    int playerX = 5;
+    int playerY = 4;
+    int boundMin = 0;
+    int boundMaxY = 9;
+    int boundMaxX = 9;
     //Player's previous coordinates
     int playerPX = 1;
     int playerPY = 1;
     //Enemy's coordinates
-    int enemyX = 3;
-    int enemyY = 3;
+    int enemyX = 0;
+    int enemyY = 0;
+    //Enemy's previous coordinates
+    int enemyPX = 0;
+    int enemyPY = 0;
     Movement();
 
     void DrawMap()
@@ -20,17 +31,19 @@ void Main()
         //Fill the players location with an X
         map[playerY, playerX] = "[x]";
         map[enemyY, enemyX] = "[!]";
-        map[2, 2] = "[O]";
-        map[3, 2] = "[O]";
 
         //Display every coordinate of the map
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 10; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < 10; j++)
             {
                 Console.Write(map[i, j]);
             }
             Console.WriteLine();
+        }
+        for (int i = 0; i < walls.Count(); i++)
+        {
+            walls[i].DrawWall();
         }
     }
 
@@ -40,7 +53,7 @@ void Main()
         String input = Console.ReadLine();
         if (input.Contains("south"))
         {
-            if (playerY == 3)
+            if (playerY == boundMaxY)
             {
                 Console.Clear();
                 DrawMap();
@@ -56,7 +69,7 @@ void Main()
 
         else if (input.Contains("north"))
         {
-            if (playerY == 0)
+            if (playerY == boundMin)
             {
                 Console.Clear();
                 DrawMap();
@@ -72,7 +85,7 @@ void Main()
 
         else if (input.Contains("east"))
         {
-            if (playerX == 3)
+            if (playerX == boundMaxX)
             {
                 Console.Clear();
                 DrawMap();
@@ -88,7 +101,7 @@ void Main()
 
         else if (input.Contains("west"))
         {
-            if (playerX == 0)
+            if (playerX == boundMin)
             {
                 Console.Clear();
                 DrawMap();
@@ -103,7 +116,7 @@ void Main()
         }
 
         //Makes torches functional
-        else if(input.Contains("torch"))
+        else if (input.Contains("torch"))
         {
             if (torch > 0)
             {
@@ -116,26 +129,26 @@ void Main()
             }
         }
 
-            //Set every space on the map to empty
-            for (int i = 0; i < 4; i++)
+        //Set every space on the map to empty
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    map[i, j] = "[ ]";
-                }
+                map[i, j] = "[ ]";
             }
+        }
 
         Console.Clear();
-        //Enemy();
         Reaction();
     }
 
     //Prints a response depending on the player's actions
     void Reaction()
     {
-        Walls();
         Enemy();
+        Walls();
         DrawMap();
+       
 
         if (playerX == enemyX && playerY == enemyY)
         {
@@ -158,7 +171,7 @@ void Main()
         }
         Console.WriteLine("\n" + message);
         Console.WriteLine("Monster is in " + (enemyY) + (enemyX));
-        Console.WriteLine("torches: x" + torch+"\nhealth: x"+health);
+        Console.WriteLine("torches: x" + torch + "\nhealth: x" + health);
         Movement();
     }
 
@@ -169,9 +182,10 @@ void Main()
         int directionE = rand.Next(0, 4);
         if (directionE == 0)
         {
-            if (enemyY != 0)
+            if (enemyY != boundMin)
             {
                 enemyY -= 1;
+                Walls();
             }
             else
             {
@@ -181,9 +195,10 @@ void Main()
 
         else if (directionE == 1)
         {
-            if (enemyY != 3)
+            if (enemyY != boundMaxY)
             {
                 enemyY += 1;
+                Walls();
             }
             else
             {
@@ -193,9 +208,10 @@ void Main()
 
         else if (directionE == 2)
         {
-            if (enemyX != 0)
+            if (enemyX != boundMin)
             {
                 enemyX -= 1;
+                Walls();
             }
             else
             {
@@ -205,38 +221,46 @@ void Main()
 
         else if (directionE == 3)
         {
-            if (enemyX != 3)
+            if (enemyX != boundMaxX)
             {
                 enemyX += 1;
+                Walls();
             }
             else
             {
                 Enemy();
             }
         }
+        enemyPX = enemyX;
+        enemyPY = enemyY;
     }
 
     //Builds walls in the level
     void Walls()
     {
-        //wall 1
-        if (playerX == 2 && playerY >= 2)
+        for (int i = 0; i < walls.Count(); i++)
         {
-            playerY = playerPY;
-            playerX = playerPX;
-            Console.Beep();
-            DrawMap();
-            Console.WriteLine("Dead End!");
-            Movement();
+
+            if (playerX == walls[i].xLocation && playerY == walls[i].yLocation)
+            {
+                playerY = playerPY;
+                playerX = playerPX;
+                Console.Beep();
+                //DrawMap();
+
+                Console.WriteLine("Dead End!");
+                Movement();
+            }
+
+            if (enemyX == walls[i].xLocation && enemyY == walls[i].yLocation)
+            {
+                enemyX = enemyPX;
+                enemyY = enemyPY;
+                Enemy();
+            }
         }
-        else
-        {
-            playerPY = playerY;
-            playerPX = playerX;
-        }
+
+        playerPY = playerY;
+        playerPX = playerX;
     }
-
-
 }
-
-

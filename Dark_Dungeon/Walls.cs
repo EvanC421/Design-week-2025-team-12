@@ -11,7 +11,7 @@ namespace Dark_Dungeon
         public int xLocation;
         public int yLocation;
 
-        string apperance = "o";
+        string apperance = "O";
 
         public Wall(int xLocation, int yLocation)
         {
