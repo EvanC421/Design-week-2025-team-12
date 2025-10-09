@@ -8,14 +8,14 @@ void Main()
     Random rand = new Random();
     int HroomX = rand.Next(0, 9);
     int HroomY = rand.Next(0, 9);
-    for (int i = 0; i < portals.Count(); i++)
+    for (int i = 0; i < portals.Length; i++)
     {
         if (portals[i].xLocation == walls[i].xLocation && portals[i].yLocation == walls[i].yLocation || portals[i].xLocation == 5 && portals[i].yLocation == 4 || portals[i].xLocation == 4 && portals[i].xLocation == 4 || portals[i].xLocation == 2 && portals[i].yLocation == 4)
         {
             Main();
         }
 
-        if (HroomX == walls[i].xLocation && HroomY == walls[i].yLocation || HroomX == 5 && HroomY == 4 || HroomX == 4 && HroomY == 4 || HroomX == 2 && HroomY == 4)
+        if (HroomX == walls[i].xLocation && HroomY == walls[i].yLocation || HroomX == 5 && HroomY == 4 || HroomX == 4 && HroomY == 4 || HroomX == 2 && HroomY == 4 || HroomX == portals[i].xLocation && HroomY == portals[i].yLocation)
         {
             Main();
         }
@@ -41,8 +41,9 @@ void Main()
     //Enemy's previous coordinates
     int enemyPX = 0;
     int enemyPY = 0;
-    //Life fountain coordinates
-
+    //Title screen
+    Console.WriteLine(" __ \\                |                         \r\n |   |   _` |   __|  |  /                      \r\n |   |  (   |  |       <                       \r\n____/  \\__,_| _|    _|\\_\\                      \r\n __ \\                                          \r\n |   |  |   |  __ \\    _` |   _ \\   _ \\   __ \\ \r\n |   |  |   |  |   |  (   |   __/  (   |  |   |\r\n____/  \\__,_| _|  _| \\__, | \\___| \\___/  _|  _|\r\n                     |___/                     ");
+    Console.WriteLine("\nPress ENTER to play");
     Movement();
 
     void DrawMap()
@@ -185,7 +186,7 @@ void Main()
         if (playerX == enemyX && playerY == enemyY)
         {
             health -= 1;
-            Console.WriteLine("You were attacked by a monster! It ran away after.");
+            Console.WriteLine("You were attacked by the minotaur! It ran away after.");
             Console.Beep(100, 1000);
             enemyX = 1;
             enemyY = 1;
