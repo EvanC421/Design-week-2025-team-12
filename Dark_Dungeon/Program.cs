@@ -3,8 +3,15 @@
 Main();
 void Main()
 {
-    Wall[] walls = new Wall[] { new Wall(1, 1), new Wall(2, 1), new Wall(2,2), new Wall(2,3), new Wall(2,4), new Wall (0,3), new Wall(0,7), new Wall(0,9), new Wall(1,5), new Wall(2,5), new Wall(2,7), new Wall (2,8), new Wall (3,4), new Wall (3,3), new Wall (3,5), new Wall (3,7), new Wall (4,0), new Wall (4,2), new Wall (4,3), new Wall (4,5), new Wall (4,6), new Wall (4,9), new Wall(5,8), new Wall (5,9), new Wall (6,0), new Wall (6,1), new Wall (6,3), new Wall (6,5), new Wall (6,6), new Wall (6,9), new Wall (7,6), new Wall (7,7), new Wall (8,1), new Wall (8,2), new Wall (8,4), new Wall (8,7), new Wall (8,9), new Wall (9,2), new Wall (9,4), new Wall (9,5)};
-   
+    Wall[] walls = new Wall[] { new Wall(1, 1), new Wall(2, 1), new Wall(2, 2), new Wall(2, 3), new Wall(0, 3), new Wall(0, 7), new Wall(0, 9), new Wall(1, 5), new Wall(2, 5), new Wall(2, 7), new Wall(2, 8), new Wall(3, 4), new Wall(3, 3), new Wall(3, 5), new Wall(3, 7), new Wall(4, 0), new Wall(4, 2), new Wall(4, 3), new Wall(4, 5), new Wall(4, 6), new Wall(4, 9), new Wall(5, 8), new Wall(5, 9), new Wall(6, 0), new Wall(6, 1), new Wall(6, 3), new Wall(6, 5), new Wall(6, 6), new Wall(6, 9), new Wall(7, 6), new Wall(7, 7), new Wall(8, 1), new Wall(8, 2), new Wall(8, 4), new Wall(8, 7), new Wall(8, 9), new Wall(9, 2), new Wall(9, 4), new Wall(9, 5) };
+    Portals[] portals = new Portals[] {new Portals(), new Portals(), new Portals()};
+    for (int i = 0; i < portals.Count(); i++)
+    {
+        if (portals[i].xLocation == walls[i].xLocation && portals[i].yLocation == walls[i].yLocation || portals[i].xLocation == 5 && portals[i].yLocation == 4 || portals[i].xLocation == 4 && portals[i].xLocation == 4 || portals[i].xLocation == 2 && portals[i].yLocation == 4)
+        {
+            Main();
+        }
+    }
 
     string message = "";
     string direction = "";
@@ -46,6 +53,10 @@ void Main()
         for (int i = 0; i < walls.Count(); i++)
         {
             walls[i].DrawWall();
+        }
+        for (int i = 0; i < portals.Count(); i++)
+        {
+            portals[i].DrawPortal();
         }
     }
 
@@ -149,8 +160,15 @@ void Main()
     void Reaction()
     {
         Enemy();
+        for (int i = 0; i < portals.Count(); i++)
+        {
+            if(playerX == portals[i].xLocation && playerY == portals[i].yLocation)
+            {
+                Warp();
+            }
+        }
         Walls();
-        //DrawMap();
+        DrawMap();
        
 
         if (playerX == enemyX && playerY == enemyY)
@@ -189,7 +207,7 @@ void Main()
             message = "There is a skeleton lying on the floor.";
         }
 
-        if (playerX == 1 && playerY == 4)
+        if (playerX == 2 && playerY == 4)
         {
             treasure = true;
             message = "You found the treasure! Now retrace your steps and escape up the stairs.";
@@ -292,5 +310,29 @@ void Main()
 
         playerPY = playerY;
         playerPX = playerX;
+    }
+
+    //Makes portal rooms send the player to a new room at random
+    void Warp()
+    {
+        playerPX = playerX;
+        playerPY = playerY;
+        Random rand = new Random();
+        playerX = rand.Next(0, 9);
+        playerY = rand.Next(0, 9);
+
+        for (int i = 0; i < walls.Count(); i++)
+        {
+
+            if (playerX == walls[i].xLocation && playerY == walls[i].yLocation || playerX == 2 && playerY == 4)
+            {
+                playerY = playerPY;
+                playerX = playerPX;
+                Console.Clear();
+                Warp();
+            }
+        }
+        direction = "You've been teleported to a random room in the dungeon!";
+        Reaction();
     }
 }
