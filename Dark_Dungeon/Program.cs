@@ -5,9 +5,17 @@ void Main()
 {
     Wall[] walls = new Wall[] { new Wall(1, 1), new Wall(2, 1), new Wall(2, 2), new Wall(2, 3), new Wall(0, 3), new Wall(0, 7), new Wall(0, 9), new Wall(1, 5), new Wall(2, 5), new Wall(2, 7), new Wall(2, 8), new Wall(3, 4), new Wall(3, 3), new Wall(3, 5), new Wall(3, 7), new Wall(4, 0), new Wall(4, 2), new Wall(4, 3), new Wall(4, 5), new Wall(4, 6), new Wall(4, 9), new Wall(5, 8), new Wall(5, 9), new Wall(6, 0), new Wall(6, 1), new Wall(6, 3), new Wall(6, 5), new Wall(6, 6), new Wall(6, 9), new Wall(7, 6), new Wall(7, 7), new Wall(8, 1), new Wall(8, 2), new Wall(8, 4), new Wall(8, 7), new Wall(8, 9), new Wall(9, 2), new Wall(9, 4), new Wall(9, 5) };
     Portals[] portals = new Portals[] {new Portals(), new Portals(), new Portals()};
+    Random rand = new Random();
+    int HroomX = rand.Next(0, 9);
+    int HroomY = rand.Next(0, 9);
     for (int i = 0; i < portals.Count(); i++)
     {
         if (portals[i].xLocation == walls[i].xLocation && portals[i].yLocation == walls[i].yLocation || portals[i].xLocation == 5 && portals[i].yLocation == 4 || portals[i].xLocation == 4 && portals[i].xLocation == 4 || portals[i].xLocation == 2 && portals[i].yLocation == 4)
+        {
+            Main();
+        }
+
+        if (HroomX == walls[i].xLocation && HroomY == walls[i].yLocation || HroomX == 5 && HroomY == 4 || HroomX == 4 && HroomY == 4 || HroomX == 2 && HroomY == 4)
         {
             Main();
         }
@@ -33,6 +41,8 @@ void Main()
     //Enemy's previous coordinates
     int enemyPX = 0;
     int enemyPY = 0;
+    //Life fountain coordinates
+
     Movement();
 
     void DrawMap()
@@ -40,6 +50,7 @@ void Main()
         //Fill the players location with an X
         map[playerY, playerX] = "[x]";
         map[enemyY, enemyX] = "[!]";
+        map[HroomY, HroomX] = "[H]";
 
         //Display every coordinate of the map
         for (int i = 0; i < 10; i++)
@@ -191,22 +202,26 @@ void Main()
             Console.Beep(200,700); 
         }
 
-        //Check specific room
+        //Check specific room for landmarks
         if (playerX == 7 && playerY == 3 || playerX == 9 && playerY == 1)
         {
             message = "There is a bunch of glowing blue mushrooms on the floor.";
         }
-
         if (playerX == 8 && playerY == 8 || playerX == 5 && playerY == 0)
         {
             message = "There is a candlestick with a dim red glow in the middle of the room.";
         }
-
         if (playerX == 3 && playerY == 1 || playerX == 1  && playerY == 8)
         {
             message = "There is a skeleton lying on the floor.";
         }
 
+        //Check specific room for fountain of life
+        if (playerX == HroomX && playerY == HroomY)
+        {
+            health = 3;
+            message = "You've discovered the fountain of life! You're health is restored. Be sure to mark this room on your map!";
+        }
         if (playerX == 2 && playerY == 4)
         {
             treasure = true;
