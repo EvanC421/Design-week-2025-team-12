@@ -242,7 +242,7 @@ void Main()
         }
         if (playerX == 3 && playerY == 1 || playerX == 1  && playerY == 8 || playerX == 1 && playerY == 2)
         {
-            message = "As you walk through this bone chilling dungeon you notice a room filled with skeletons, each one looking decayed and worse than the last. However behind one you notice something that looks like writing, moving it aside you find a message written “westward you may find what secrets lie in this dreaded place.” Uncertain if it's foreshadowing something worse or a sign of treasure you mark it down on your map, westward you go.";
+            message = "As you walk through this bone chilling dungeon you notice a room filled with skeletons, each one looking decayed and worse than the last.";
         }
         if (playerX == 5 && playerY == 4)
         {
