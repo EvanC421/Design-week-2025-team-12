@@ -203,7 +203,7 @@ void Main()
             }
         }
         Walls();
-        DrawMap();
+        //DrawMap();
         Console.WriteLine("You can type 'south' to go down a tile, 'north' to go up a tile, 'west' to go left a tile and 'east' to go right a tile.");
 
         if (playerX == enemyX && playerY == enemyY)
